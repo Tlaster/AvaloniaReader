@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using Avalonia.Compose.Renderer;
 
 namespace Avalonia.Compose.Widget;
 

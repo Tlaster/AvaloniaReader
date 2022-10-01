@@ -1,17 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
-using Application = Android.App.Application;
 
-namespace AvaloniaReader.Android
+namespace AvaloniaReader.Android;
+
+[Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
+public class SplashActivity : Activity
 {
-    [Activity(Theme = "@style/MyTheme.Splash", MainLauncher = true, NoHistory = true)]
-    public class SplashActivity : Activity
+    protected override void OnResume()
     {
-        protected override void OnResume()
-        {
-            base.OnResume();
+        base.OnResume();
 
-            StartActivity(new Intent(Application.Context, typeof(MainActivity)));
-        }
+        StartActivity(new Intent(Application.Context, typeof(MainActivity)));
     }
 }

@@ -1,27 +1,11 @@
 using System;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.LogicalTree;
-using static Avalonia.Compose.Widget.Func;
+using Avalonia.Compose;
 
 namespace AvaloniaReader.UI.Common;
 
-abstract class BaseView<TState, TViewModel> : UserControl where TViewModel : BaseViewModel<TState>, new()
+internal abstract class BaseView<TState, TViewModel> : ComposeView<TState>
+    where TViewModel : BaseViewModel<TState>, new()
 {
     protected TViewModel ViewModel { get; } = new();
-    private IDisposable? _disposable;
-
-    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
-    {
-        base.OnAttachedToVisualTree(e);
-        _disposable = ViewModel.State.Subscribe(state => Content = ProduceView(state));
-    }
-
-    protected override void OnDetachedFromLogicalTree(LogicalTreeAttachmentEventArgs e)
-    {
-        base.OnDetachedFromLogicalTree(e);
-        _disposable?.Dispose();
-    }
-
-    protected abstract Control ProduceView(TState state);
+    protected override IObservable<TState> State => ViewModel.State;
 }

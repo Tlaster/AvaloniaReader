@@ -6,52 +6,50 @@ using Avalonia.Markup.Xaml;
 using AvaloniaReader.Common;
 using AvaloniaReader.UI.Hosting;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using FluentAvalonia.Styling;
 using Microsoft.Extensions.DependencyInjection;
 using Realms;
 
-namespace AvaloniaReader
+namespace AvaloniaReader;
+
+public class App : Application
 {
-    public partial class App : Application
+    public override void Initialize()
     {
-        public override void Initialize()
+        AvaloniaXamlLoader.Load(this);
+        EnsureWorkingDirectory();
+        Ioc.Default.ConfigureServices(ConfigureServices());
+    }
+
+    private void EnsureWorkingDirectory()
+    {
+        if (!Directory.Exists(Consts.DocumentDirectory))
         {
-            AvaloniaXamlLoader.Load(this);
-            EnsureWorkingDirectory();
-            Ioc.Default.ConfigureServices(ConfigureServices());
+            Directory.CreateDirectory(Consts.DocumentDirectory);
+        }
+    }
+
+    private static IServiceProvider ConfigureServices()
+    {
+        var services = new ServiceCollection();
+        services.AddSingleton<Realm>(_ =>
+            Realm.GetInstance(new RealmConfiguration(Path.Combine(Consts.DocumentDirectory, ".realm"))
+                { ShouldDeleteIfMigrationNeeded = true }));
+        return services.BuildServiceProvider();
+    }
+
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        switch (ApplicationLifetime)
+        {
+            case IClassicDesktopStyleApplicationLifetime classicDesktopStyleApplicationLifetime:
+                classicDesktopStyleApplicationLifetime.MainWindow = new RootWindow();
+                break;
+            case ISingleViewApplicationLifetime singleViewApplicationLifetime:
+                singleViewApplicationLifetime.MainView = new RootView();
+                break;
         }
 
-        private void EnsureWorkingDirectory()
-        {
-            if (!Directory.Exists(Consts.DocumentDirectory))
-            {
-                Directory.CreateDirectory(Consts.DocumentDirectory);
-            }
-        }
-
-        private static IServiceProvider ConfigureServices()
-        {
-            var services = new ServiceCollection();
-            services.AddSingleton<Realm>(_ =>
-                Realm.GetInstance(new RealmConfiguration(Path.Combine(Consts.DocumentDirectory, ".realm"))
-                    { ShouldDeleteIfMigrationNeeded = true }));
-            return services.BuildServiceProvider();
-        }
-
-
-        public override void OnFrameworkInitializationCompleted()
-        {
-            switch (ApplicationLifetime)
-            {
-                case IClassicDesktopStyleApplicationLifetime classicDesktopStyleApplicationLifetime:
-                    classicDesktopStyleApplicationLifetime.MainWindow = new RootWindow();
-                    break;
-                case ISingleViewApplicationLifetime singleViewApplicationLifetime:
-                    singleViewApplicationLifetime.MainView = new RootView();
-                    break;
-            }
-
-            base.OnFrameworkInitializationCompleted();
-        }
+        base.OnFrameworkInitializationCompleted();
     }
 }

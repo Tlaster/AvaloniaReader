@@ -12,13 +12,14 @@ internal static class RendererPool
         { typeof(Box), new BoxRenderer() },
         { typeof(Button), new ButtonRenderer() },
         { typeof(Column), new ColumnRenderer() },
-        { typeof(Row), new RowRenderer() },
+        { typeof(Row), new RowRenderer() }
     }.ToImmutableDictionary();
-    
-    public static IRenderer GetRenderer<T>() where T: WidgetObject
+
+    public static IRenderer GetRenderer<T>() where T : WidgetObject
     {
         return Renderers[typeof(T)];
     }
+
     public static IRenderer GetRenderer(Type type)
     {
         return Renderers[type];

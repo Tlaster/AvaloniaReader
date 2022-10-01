@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Windows.Input;
-using Avalonia.Controls;
-using Avalonia.Layout;
-using Avalonia.ReactiveUI;
+using Avalonia.Compose.Widget;
 using AvaloniaReader.UI.Common;
+using static Avalonia.Compose.Widget.FuncUi;
 
 namespace AvaloniaReader.UI.Page.Feed;
 
-class FeedView : BaseView<IFeedState, FeedViewModel>
+internal class FeedView : BaseView<IFeedState, FeedViewModel>
 {
-    protected override Control ProduceView(IFeedState state)
+    protected override WidgetObject Render(IFeedState state)
     {
         return state switch
         {
@@ -24,45 +22,27 @@ class FeedView : BaseView<IFeedState, FeedViewModel>
         };
     }
 
-    private Control FeedLoadingView()
+    private WidgetObject FeedLoadingView()
     {
-        return new TextBlock
-        {
-            Text = "Loading..."
-        };
+        return Text("Loading...");
     }
 
-    private Control FeedErrorView(IFeedState.Error error)
+    private WidgetObject FeedErrorView(IFeedState.Error error)
     {
-        return new TextBlock
-        {
-            Text = error.Exception.Message
-        };
+        return Text(error.Exception.Message);
     }
 
-    private Control FeedDataView(
+    private WidgetObject FeedDataView(
         IFeedState.Data data,
         ICommand addCommand
     )
     {
-        return new StackPanel
-        {
-            Orientation = Orientation.Vertical,
-            Children =
-            {
-                new TextBlock
-                {
-                    Text = data.Count,
-                },
-                new Button
-                {
-                    Content = new TextBlock
-                    {
-                        Text = "Add"
-                    },
-                    Command = addCommand
-                }
-            }
-        };
+        return Column(
+            Text(data.Count),
+            Button(
+                addCommand,
+                Text("Add")
+            )
+        );
     }
 }

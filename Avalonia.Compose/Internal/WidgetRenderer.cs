@@ -1,16 +1,17 @@
 using Avalonia.Compose.Widget;
 using Avalonia.Controls;
+using Panel = Avalonia.Controls.Panel;
 
 namespace Avalonia.Compose.Internal;
 
 internal class WidgetRenderer
 {
-    public bool IsChanged(WidgetObject oldValue, WidgetObject newValue) 
+    private bool IsChanged(WidgetObject oldValue, WidgetObject newValue)
     {
         return oldValue != newValue;
     }
-    
-    public Control Render(WidgetObject widget)
+
+    private Control Render(WidgetObject widget)
     {
         var renderer = RendererPool.GetRenderer(widget.GetType());
         var control = renderer.Create();
@@ -22,10 +23,61 @@ internal class WidgetRenderer
                 renderer.AddChild(control, childControl);
             }
         }
+
         return control;
     }
 
-    public Control RenderIfNeeded(WidgetObject? oldValue, WidgetObject newValue, Control control)
+    public Control RenderIfNeeded(WidgetObject? oldValue, WidgetObject newValue, Control? control)
     {
+        if (oldValue == null || control == null)
+        {
+            return Render(newValue);
+        }
+
+        if (!IsChanged(oldValue, newValue))
+        {
+            return control;
+        }
+
+        var oldRenderer = RendererPool.GetRenderer(oldValue.GetType());
+        var newRenderer = RendererPool.GetRenderer(newValue.GetType());
+        if (oldRenderer != newRenderer) // tree changed
+        {
+            return Render(newValue);
+        }
+
+        newRenderer.Update(control, newValue);
+        if (newValue is IPanelWidget newPanel && oldValue is IPanelWidget oldPanel && control is Panel controlPanel)
+        {
+            var oldChildren = oldPanel.Children;
+            var newChildren = newPanel.Children;
+            var oldCount = oldChildren.Count;
+            var newCount = newChildren.Count;
+            var count = Math.Max(oldCount, newCount);
+            for (var i = 0; i < count; i++)
+            {
+                var oldChild = oldChildren.ElementAtOrDefault(i);
+                var newChild = newChildren.ElementAtOrDefault(i);
+                var childControl = controlPanel.Children.ElementAtOrDefault(i);
+                if (oldChild == null && newChild != null)
+                {
+                    newRenderer.AddChild(control, Render(newChild));
+                }
+                else if (newChild == null && childControl is Control childControl1)
+                {
+                    newRenderer.RemoveChild(control, childControl1);
+                }
+                else if (newChild != null && childControl is Control childControl2)
+                {
+                    var renderedChild = RenderIfNeeded(oldChild, newChild, childControl2);
+                    if (!ReferenceEquals(renderedChild, childControl))
+                    {
+                        newRenderer.ReplaceChild(control, i, renderedChild);
+                    }
+                }
+            }
+        }
+
+        return control;
     }
 }

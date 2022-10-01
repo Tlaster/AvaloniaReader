@@ -1,5 +1,6 @@
 using Avalonia.Compose.Widget;
 using Avalonia.Controls;
+using Avalonia.Layout;
 
 namespace Avalonia.Compose.Renderer;
 
@@ -9,7 +10,7 @@ internal class ColumnRenderer : RendererObject<Column, StackPanel>
     {
         return new StackPanel
         {
-            Orientation = Orientation.Vertical,
+            Orientation = Orientation.Vertical
         };
     }
 

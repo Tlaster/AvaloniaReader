@@ -3,7 +3,7 @@ using AvaloniaReader.UI.Page.Feed;
 
 namespace AvaloniaReader.UI.Hosting;
 
-class RootView : UserControl
+internal class RootView : UserControl
 {
     public RootView()
     {

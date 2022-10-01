@@ -3,7 +3,7 @@ using Avalonia.Controls;
 
 namespace Avalonia.Compose.Renderer;
 
-internal class TextRenderer: RendererObject<Text, TextBlock>
+internal class TextRenderer : RendererObject<Text, TextBlock>
 {
     protected internal override void Update(TextBlock control, Text widget)
     {
