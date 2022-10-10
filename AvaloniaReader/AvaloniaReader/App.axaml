@@ -5,5 +5,6 @@
 
     <Application.Styles>
         <styling:FluentAvaloniaTheme />
+        <FluentTheme />
     </Application.Styles>
 </Application>

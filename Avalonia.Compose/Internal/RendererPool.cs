@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using Avalonia.Compose.Renderer;
 using Avalonia.Compose.Widget;
+using Avalonia.Compose.Widget.Layout;
 
 namespace Avalonia.Compose.Internal;
 

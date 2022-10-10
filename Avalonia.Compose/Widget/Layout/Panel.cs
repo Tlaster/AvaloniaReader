@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace Avalonia.Compose.Widget;
+namespace Avalonia.Compose.Widget.Layout;
 
 public record Panel(ImmutableList<WidgetObject> Children) : WidgetObject, IPanelWidget
 {

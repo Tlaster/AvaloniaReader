@@ -1,9 +1,9 @@
 using Avalonia;
-using FluentAvalonia.UI.Controls;
+using AvaloniaReader.UI.Controls;
 
 namespace AvaloniaReader.UI.Hosting;
 
-public partial class RootWindow : CoreWindow
+partial class RootWindow : ModernWindow
 {
     public RootWindow()
     {

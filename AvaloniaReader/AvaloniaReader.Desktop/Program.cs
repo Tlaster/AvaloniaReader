@@ -1,5 +1,6 @@
 ﻿using System;
 using Avalonia;
+using Avalonia.ReactiveUI;
 
 namespace AvaloniaReader.Desktop;
 
@@ -20,6 +21,7 @@ internal class Program
     {
         return AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseReactiveUI()
             .LogToTrace();
     }
 }

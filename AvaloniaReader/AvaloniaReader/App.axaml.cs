@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -7,7 +8,9 @@ using AvaloniaReader.Common;
 using AvaloniaReader.UI.Hosting;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
+using ReactiveUI;
 using Realms;
+using Splat;
 
 namespace AvaloniaReader;
 
@@ -18,6 +21,7 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
         EnsureWorkingDirectory();
         Ioc.Default.ConfigureServices(ConfigureServices());
+        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
     }
 
     private void EnsureWorkingDirectory()
