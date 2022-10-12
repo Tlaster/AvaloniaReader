@@ -1,6 +1,6 @@
-﻿using System;
-using AvaloniaReader.UI.Page.Feed;
+﻿using AvaloniaReader.UI.Page.Home;
 using ReactiveUI;
+using HomeView = AvaloniaReader.UI.Page.Home.HomeView;
 
 namespace AvaloniaReader.UI.Common;
 
@@ -10,7 +10,7 @@ class AppViewLocator : ReactiveUI.IViewLocator
     {
         return viewModel switch
         {
-            FeedViewModel => new FeedView(),
+            HomeViewModel => new HomeView(),
             _ => null
         };
     }

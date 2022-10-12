@@ -6,7 +6,7 @@ using ReactiveUI;
 
 namespace AvaloniaReader.UI.Hosting;
 
-partial class RootView : ReactiveUserControl<RootViewModel>
+partial class RootView : UserControl
 {
     public RootView()
     {

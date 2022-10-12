@@ -8,7 +8,20 @@
     x:Class="AvaloniaReader.UI.Hosting.RootWindow"
     WindowStartupLocation="CenterScreen"
     Background="Transparent"
+    ExtendClientAreaTitleBarHeightHint="-1"
     ExtendClientAreaToDecorationsHint="True"
     Title="RootWindow">
-    <hosting:RootView />
+
+    <Panel>
+        <!-- <ExperimentalAcrylicBorder IsHitTestVisible="False"> -->
+        <!--     <ExperimentalAcrylicBorder.Material> -->
+        <!--         <ExperimentalAcrylicMaterial -->
+        <!--             BackgroundSource="Digger" -->
+        <!--             TintColor="Black" -->
+        <!--             TintOpacity="1" -->
+        <!--             MaterialOpacity="0.65" /> -->
+        <!--     </ExperimentalAcrylicBorder.Material> -->
+        <!-- </ExperimentalAcrylicBorder> -->
+        <hosting:RootView />
+    </Panel>
 </Window>

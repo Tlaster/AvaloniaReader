@@ -1,27 +1,15 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:reactiveUi="http://reactiveui.net"
-             xmlns:hosting="clr-namespace:AvaloniaReader.UI.Hosting"
-             xmlns:common="clr-namespace:AvaloniaReader.UI.Common"
-             xmlns:reactiveUi1="clr-namespace:ReactiveUI;assembly=ReactiveUI"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="hosting:RootViewModel"
-             x:Class="AvaloniaReader.UI.Hosting.RootView">
-    <UserControl.DataContext>
-        <hosting:RootViewModel/>
-    </UserControl.DataContext>
-    <Grid>
-        <reactiveUi:RoutedViewHost
-            Router="{CompiledBinding Router}" 
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            HorizontalContentAlignment="Stretch"
-            VerticalContentAlignment="Stretch">
-            <reactiveUi:RoutedViewHost.ViewLocator>
-                <common:AppViewLocator />
-            </reactiveUi:RoutedViewHost.ViewLocator>
-        </reactiveUi:RoutedViewHost>
-    </Grid>
+﻿<UserControl 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reactiveUi="http://reactiveui.net"
+    xmlns:hosting="clr-namespace:AvaloniaReader.UI.Hosting"
+    xmlns:common="clr-namespace:AvaloniaReader.UI.Common"
+    xmlns:reactiveUi1="clr-namespace:ReactiveUI;assembly=ReactiveUI"
+    xmlns:home="clr-namespace:AvaloniaReader.UI.Page.Home"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:DataType="hosting:RootViewModel"
+    x:Class="AvaloniaReader.UI.Hosting.RootView">
+    <home:HomeView/>
 </UserControl>

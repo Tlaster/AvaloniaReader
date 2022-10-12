@@ -4,7 +4,7 @@
              x:Class="AvaloniaReader.App">
 
     <Application.Styles>
-        <styling:FluentAvaloniaTheme />
-        <FluentTheme />
+        <styling:FluentAvaloniaTheme RequestedTheme="Dark"/>
+        <FluentTheme Mode="Dark"/>
     </Application.Styles>
 </Application>

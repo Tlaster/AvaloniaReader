@@ -1,0 +1,58 @@
+﻿<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:home="clr-namespace:AvaloniaReader.UI.Page.Home"
+    xmlns:model="clr-namespace:AvaloniaReader.UI.Model"
+    mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+    x:Class="AvaloniaReader.UI.Page.Home.HomeView"
+    x:DataType="home:HomeViewModel">
+    <UserControl.DataContext>
+        <home:HomeViewModel />
+    </UserControl.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="400" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <ExperimentalAcrylicBorder>
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial TintColor="Black" MaterialOpacity="0.85" TintOpacity="1" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <ExperimentalAcrylicBorder Grid.Column="1" Grid.ColumnSpan="2" IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial TintColor="#222222" MaterialOpacity="0.85" TintOpacity="1" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+        <ListBox Grid.Column="0" Items="{CompiledBinding FeedSources}" SelectedItem="{CompiledBinding SelectedFeedSource, Mode=TwoWay}"
+                 SelectionMode="Single" Background="Transparent">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="model:UiFeedSource">
+                    <TextBlock Text="{CompiledBinding Title}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Column="1" >
+            <ProgressBar IsIndeterminate="True"
+                         IsVisible="{CompiledBinding IsFeedLoading}" 
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ListBox IsVisible="{CompiledBinding !IsFeedLoading}"
+                     Background="Transparent"
+                     Items="{CompiledBinding FeedItems}"
+                     SelectedItem="{CompiledBinding SelectedFeedItem, Mode=TwoWay}"
+                     SelectionMode="Single">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="model:UiFeedItem">
+                        <TextBlock Text="{CompiledBinding Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="2" >
+            
+        </Grid>
+    </Grid>
+</UserControl>

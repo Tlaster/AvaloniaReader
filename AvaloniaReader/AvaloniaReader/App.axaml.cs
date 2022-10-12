@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaReader.Common;
+using AvaloniaReader.Repository;
 using AvaloniaReader.UI.Hosting;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,7 @@ public class App : Application
         services.AddSingleton<Realm>(_ =>
             Realm.GetInstance(new RealmConfiguration(Path.Combine(Consts.DocumentDirectory, ".realm"))
                 { ShouldDeleteIfMigrationNeeded = true }));
+        services.AddSingleton<FeedRepository>();
         return services.BuildServiceProvider();
     }
 

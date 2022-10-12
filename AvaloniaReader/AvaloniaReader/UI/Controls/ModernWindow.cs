@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
 using FluentAvalonia.Styling;
@@ -82,5 +83,13 @@ class ModernWindow : CoreWindow
 
             Background = new ImmutableSolidColorBrush(color, 0.9);
         }
+    }
+    
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+    {
+        base.OnApplyTemplate(e);            
+        ExtendClientAreaChromeHints = 
+            Avalonia.Platform.ExtendClientAreaChromeHints.PreferSystemChrome |                 
+            Avalonia.Platform.ExtendClientAreaChromeHints.OSXThickTitleBar;
     }
 }
