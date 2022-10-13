@@ -6,6 +6,7 @@ using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Xml;
 using AvaloniaReader.UI.Model;
+using Humanizer;
 
 namespace AvaloniaReader.Repository;
 
@@ -51,5 +52,12 @@ class FeedRepository
             new UiFeedSource("知乎", "https://www.zhihu.com/rss"),
             new UiFeedSource("简书", "https://www.jianshu.com/rss"),
         }.ToImmutableList());
+    }
+
+    public async Task<UiArticle> GetArticle(string url)
+    {
+        var reader = new SmartReader.Reader(url);
+        var article = await reader.GetArticleAsync();
+        return new UiArticle(Title: article.Title ?? "", Content: article.Content ?? "", Author: article.Author ?? "", Url: url, ImageUrl: article.FeaturedImage ?? "", PublishDate: article.PublicationDate?.Humanize() ?? "");
     }
 }

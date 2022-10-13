@@ -22,13 +22,18 @@ partial class HomeViewModel
     [ObservableProperty] private UiFeedSource? _selectedFeedSource = null;
     [ObservableProperty] private ImmutableList<UiFeedItem> _feedItems = ImmutableList<UiFeedItem>.Empty;
     [ObservableProperty] private UiFeedItem? _selectedFeedItem = null;
+    [ObservableProperty] private UiArticle? _article = null;
     
     partial void OnSelectedFeedSourceChanged(UiFeedSource? value)
     {
         RefreshFeedItemCommand.Execute(null);
     }
 
-
+    partial void OnSelectedFeedItemChanged(UiFeedItem? value)
+    {
+        LoadArticleCommand.Execute(null);
+    }
+    
     public HomeViewModel()
     {
         RefreshSourcesCommand.Execute(null);
@@ -48,5 +53,15 @@ partial class HomeViewModel
         IsFeedLoading = true;
         FeedItems = await _repository.GetFeedItems(SelectedFeedSource.Url);
         IsFeedLoading = false;
+    }
+    
+    [RelayCommand]
+    private async Task LoadArticle()
+    {
+        if (string.IsNullOrEmpty(SelectedFeedItem?.Link))
+            return;
+        IsArticleLoading = true;
+        Article = await _repository.GetArticle(SelectedFeedItem.Link);
+        IsArticleLoading = false;
     }
 }

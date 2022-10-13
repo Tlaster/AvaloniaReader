@@ -1,8 +1,9 @@
-﻿using Avalonia.ReactiveUI;
+﻿using Avalonia.Controls;
+using Avalonia.ReactiveUI;
 
 namespace AvaloniaReader.UI.Page.Home;
 
-partial class HomeView : ReactiveUserControl<HomeViewModel>
+partial class HomeView : UserControl
 {
     public HomeView()
     {

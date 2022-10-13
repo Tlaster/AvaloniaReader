@@ -5,54 +5,92 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:home="clr-namespace:AvaloniaReader.UI.Page.Home"
     xmlns:model="clr-namespace:AvaloniaReader.UI.Model"
+    xmlns:controls="clr-namespace:FluentAvalonia.UI.Controls;assembly=FluentAvalonia"
     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
     x:Class="AvaloniaReader.UI.Page.Home.HomeView"
     x:DataType="home:HomeViewModel">
     <UserControl.DataContext>
         <home:HomeViewModel />
     </UserControl.DataContext>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
-            <ColumnDefinition Width="400" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <ExperimentalAcrylicBorder>
+    <Grid ColumnDefinitions="150 1 400 1 *">
+        <ExperimentalAcrylicBorder Grid.Column="0" IsHitTestVisible="False">
             <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial TintColor="Black" MaterialOpacity="0.85" TintOpacity="1" />
+                <ExperimentalAcrylicMaterial TintColor="{DynamicResource SolidBackgroundFillColorBase}" MaterialOpacity="0.85" TintOpacity="1" />
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
-        <ExperimentalAcrylicBorder Grid.Column="1" Grid.ColumnSpan="2" IsHitTestVisible="False">
-            <ExperimentalAcrylicBorder.Material>
-                <ExperimentalAcrylicMaterial TintColor="#222222" MaterialOpacity="0.85" TintOpacity="1" />
-            </ExperimentalAcrylicBorder.Material>
-        </ExperimentalAcrylicBorder>
-        <ListBox Grid.Column="0" Items="{CompiledBinding FeedSources}" SelectedItem="{CompiledBinding SelectedFeedSource, Mode=TwoWay}"
-                 SelectionMode="Single" Background="Transparent">
-            <ListBox.ItemTemplate>
-                <DataTemplate x:DataType="model:UiFeedSource">
-                    <TextBlock Text="{CompiledBinding Title}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <Grid Grid.Column="1" >
-            <ProgressBar IsIndeterminate="True"
+        <!-- <Rectangle Grid.Column="0" IsHitTestVisible="False" Fill="{DynamicResource SolidBackgroundFillColorBaseBrush}"/> -->
+        <Rectangle Grid.Column="2" Grid.ColumnSpan="3" IsHitTestVisible="False" Fill="{DynamicResource SolidBackgroundFillColorBase}"/>
+        <Grid Grid.Column="0" RowDefinitions="48 *">
+            <ListBox Grid.Row="1" 
+                     Items="{CompiledBinding FeedSources}" 
+                     SelectedItem="{CompiledBinding SelectedFeedSource, Mode=TwoWay}"
+                     SelectionMode="Single"
+                     Background="Transparent">
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="model:UiFeedSource">
+                        <TextBlock Text="{CompiledBinding Title}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <Grid Grid.Column="2" RowDefinitions="48 1 *">
+            <Rectangle Fill="{DynamicResource AcrylicBackgroundFillColorDefaultBrush}" IsHitTestVisible="False"/>
+            <Grid Grid.Row="0" ColumnDefinitions="Auto * Auto" Margin="16 0">
+                <TextBlock VerticalAlignment="Center"
+                           Text="{CompiledBinding SelectedFeedSource.Title}"/>
+                <Button Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Theme="{DynamicResource TransparentButton}"
+                        IsEnabled="{CompiledBinding !!SelectedFeedSource}"
+                        Command="{CompiledBinding RefreshFeedItemCommand}">
+                    <controls:SymbolIcon Symbol="Refresh"/>
+                </Button>
+            </Grid>
+            <Rectangle Grid.Row="1" 
+                       Fill="Black" 
+                       IsVisible="{CompiledBinding !IsFeedLoading}" />
+            <ProgressBar Grid.Row="1" IsIndeterminate="True"
                          IsVisible="{CompiledBinding IsFeedLoading}" 
-                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <ListBox IsVisible="{CompiledBinding !IsFeedLoading}"
+                         HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <ListBox Grid.Row="2" IsVisible="{CompiledBinding !IsFeedLoading}"
                      Background="Transparent"
                      Items="{CompiledBinding FeedItems}"
                      SelectedItem="{CompiledBinding SelectedFeedItem, Mode=TwoWay}"
                      SelectionMode="Single">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="model:UiFeedItem">
-                        <TextBlock Text="{CompiledBinding Title}" />
+                        <TextBlock Text="{CompiledBinding Title}" TextWrapping="Wrap"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-        <Grid Grid.Column="2" >
-            
+        <Grid Grid.Column="4" RowDefinitions="48 1 *">
+            <Rectangle Fill="{DynamicResource AcrylicBackgroundFillColorDefaultBrush}" IsHitTestVisible="False"/>
+            <Grid Grid.Row="0" ColumnDefinitions="Auto * Auto" Margin="16 0">
+                <Button Grid.Column="2"
+                        VerticalAlignment="Center"
+                        Theme="{DynamicResource TransparentButton}">
+                    <controls:SymbolIcon Symbol="Refresh"/>
+                </Button>
+            </Grid>
+            <Rectangle Grid.Row="1" 
+                       Fill="Black" 
+                       IsVisible="{CompiledBinding !IsArticleLoading}" />
+            <ProgressBar Grid.Row="1" IsIndeterminate="True"
+                         IsVisible="{CompiledBinding IsArticleLoading}" 
+                         HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+            <ScrollViewer Grid.Row="2">
+                <StackPanel Orientation="Vertical" Margin="16">
+                    <TextBlock Text="{CompiledBinding Article.Title}" 
+                               TextWrapping="Wrap" 
+                               Theme="{DynamicResource TitleTextBlockStyle}" 
+                               HorizontalAlignment="Center"/>
+                    <Control Height="8"/>
+                    <TextBlock Text="{CompiledBinding Article.Content}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
+        <Rectangle Grid.Column="1" Fill="Black" />
+        <Rectangle Grid.Column="3" Fill="Black" />
     </Grid>
 </UserControl>
